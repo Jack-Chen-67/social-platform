@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/social_platform?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: a001
+  security:
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true # 开启下划线转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 显示SQL日志
+  global-config:
+    db-config:
+      id-type: auto # 主键自增
+      table-underline: true # 强制下划线命名
+
+logging:
+  level:
+    root: INFO
+    com.itcjx: DEBUG
+    org.springframework.jdbc: TRACE
+    org.mybatis: TRACE
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+
+jwt:
+  secret : fx2AAfK84Rw06g9JNsYLyjtXffdmH48TcjI2UOScbkQOWoPJroF2isqHnBjJkMGQMzZSRJHT78R5IOnSZMylXQ==
+
