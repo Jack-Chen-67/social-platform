@@ -88,7 +88,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
 
         // 4. 生成JWT token
-        String token = jwtTokenUtil.generateToken(user.getUsername()); // 使用JwtTokenUtil生成token
+        String token = jwtTokenUtil.generateToken(user.getUsername(), user.getId()); // 使用JwtTokenUtil生成token
 
 
         // 5. 构造返回对象

@@ -49,7 +49,8 @@ public class Result<T> {
         DUPLICATE_USERNAME(1002, "用户名已存在"),
         ADD_FAILED(1003, "添加失败"),
         UPDATE_FAILED(1004, "更新失败"),
-        DATABASE_ERROR(1005, "数据库操作失败");
+        DATABASE_ERROR(1005, "数据库操作失败"),
+        DELETE_FAILED(1006, "删除失败");
 
         private final int code;
         private final String msg;

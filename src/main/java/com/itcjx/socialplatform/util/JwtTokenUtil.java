@@ -26,9 +26,9 @@ public class JwtTokenUtil {
     }
 
     // 生成token
-    public String generateToken(String username) {
+    public String generateToken(String username, Long userId) {
         return Jwts.builder()
-                //.setClaims(claims)
+                .claim("UserId", userId)
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, Base64.getDecoder().decode(secret))
@@ -53,4 +53,35 @@ public class JwtTokenUtil {
                 .getBody()
                 .getSubject();
     }
+
+    //从令牌中获取用户ID
+    public Long getUserIdFromToken(String token) {
+        if (token == null || token.isBlank()) {
+            throw new IllegalArgumentException("token 为空");
+        }
+        token = token.trim();
+        return Jwts.parser()
+                .setSigningKey(Base64.getDecoder().decode(secret))
+                .parseClaimsJws(token)
+                .getBody()
+                .get("UserId", Long.class);
+    }
+
+
+
+
+    // 获取过期时间
+    public Date extractExpiration(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
+
+    // 检查是否过期
+    public boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
 }

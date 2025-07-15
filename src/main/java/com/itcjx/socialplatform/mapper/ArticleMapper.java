@@ -9,5 +9,8 @@ import java.util.List;
 public interface ArticleMapper extends BaseMapper<Article> {
 
     @Select("SELECT * FROM articles WHERE user_id = #{userId} ORDER BY created_at DESC")
-    List< Article> selectById(Long userId);
+    List< Article> selectByUserId(Long userId);
+
+    @Select("SELECT * FROM articles WHERE id = #{Id}")
+    Article selectById(Long Id);
 }
