@@ -27,17 +27,39 @@ public class LikeServiceImpl implements ILikeService {
         }
         //key
         String key = "article:like:" + articleId;
-        //判断是否点赞
-        boolean isLike = redisTemplate.opsForSet().isMember(key, userId);
-        if(Boolean.TRUE.equals(isLike)){
-            //点赞->取消点赞
-            redisTemplate.opsForSet().remove(key, userId);
-            return Result.success("取消点赞成功");
-        }else{
-            //取消点赞->点赞
-            redisTemplate.opsForSet().add(key, userId);
-            return Result.success("点赞成功");
+        int retryCount = 3;
+
+        while (retryCount-- > 0) {
+            try {
+                //点赞
+                boolean isMember = redisTemplate.opsForSet().isMember(key, userId);
+                if(Boolean.TRUE.equals(isMember)){
+                    //点赞->取消点赞
+                    Long removed = redisTemplate.opsForSet().remove(key, userId);
+                    if (removed != null && removed > 0) {
+                        return Result.success("取消点赞成功");
+                    } else {
+                        return Result.error(Result.ErrorCode.BUSINESS_ERROR, "您还未点赞");
+                    }
+                }else{
+                    //取消点赞->点赞
+                    Long added = redisTemplate.opsForSet().add(key, userId);
+                    if (added != null && added > 0) {
+                        return Result.success("点赞成功");
+                    } else {
+                        return Result.error(Result.ErrorCode.BUSINESS_ERROR, "操作失败，请重试");
+                    }
+                }
+
+            } catch (Exception e) {
+                log.error("点赞操作异常，正在重试...", e); // 关键！打印完整堆栈
+                if (retryCount == 0) {
+                    return Result.error(Result.ErrorCode.SERVER_ERROR, "系统异常，请稍后再试");
+                }
+            }
         }
+
+        return Result.error(Result.ErrorCode.BUSINESS_ERROR, "操作失败，请重试");
     }
 
     //获取点赞数
