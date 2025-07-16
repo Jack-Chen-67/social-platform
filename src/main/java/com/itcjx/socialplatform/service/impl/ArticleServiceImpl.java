@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
     private ArticleMapper articleMapper;
     private final JwtTokenUtil jwtTokenUtil; // 用于解析Token中的用户ID
