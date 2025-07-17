@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 //@Data
-@TableName("user")
+@TableName("users")
 public class User {
     @TableId(type = IdType.AUTO) // 对应BIGINT自增主键
     private Long id;

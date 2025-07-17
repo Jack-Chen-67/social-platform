@@ -4,6 +4,7 @@ import com.itcjx.socialplatform.DTO.ArticleDTO;
 import com.itcjx.socialplatform.entity.Article;
 import com.itcjx.socialplatform.service.impl.ArticleServiceImpl;
 import com.itcjx.socialplatform.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class ArticleController {
 
+    @Autowired
     private ArticleServiceImpl articleService;
 
     public ArticleController(ArticleServiceImpl articleService)
@@ -33,7 +35,7 @@ public class ArticleController {
     }
 
     //删除文章
-    @PostMapping("/deleteArticle/{id}")
+    @DeleteMapping("/deleteArticle/{id}")
     Result<Void> deleteArticle(@PathVariable Long id ,@RequestHeader("Authorization") String authorizationHeader){
         // 清理 Bearer 和前后空格
         String token = authorizationHeader.replace("Bearer ", "").trim();

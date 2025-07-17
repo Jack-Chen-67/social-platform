@@ -4,6 +4,7 @@ import com.itcjx.socialplatform.DTO.UserDTO;
 import com.itcjx.socialplatform.entity.User;
 import com.itcjx.socialplatform.service.IUserService;
 import com.itcjx.socialplatform.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class UserController {
 
+    @Autowired
     private IUserService userService;
 
     public UserController(IUserService userService) {

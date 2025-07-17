@@ -1,10 +1,15 @@
 package com.itcjx.socialplatform.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Result<T> {
     private int code;//状态码
     private String msg;//提示信息
     private T data;// 数据
     private Long timestamp;//时间戳
+
+    private Map<String, Object> extra;
 
     public Result(int code, String msg, T data) {
         this.code = code;
@@ -67,6 +72,18 @@ public class Result<T> {
         public String getMsg() {
             return msg;
         }
+    }
+
+    public Result<T> addExtra(String key, Object value) {
+        if (this.extra == null) {
+            this.extra = new HashMap<>();
+        }
+        this.extra.put(key, value);
+        return this;
+    }
+
+    public Map<String, Object> getExtra() {
+        return extra;
     }
 
     public int getCode() {
