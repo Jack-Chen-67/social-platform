@@ -22,6 +22,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("article/getArticle/**").permitAll()
                         .requestMatchers("likes/{articleId}/**").permitAll()
+                        .requestMatchers("commentLike/getCommentLikeCount/{commentId}**").permitAll()
                         .anyRequest()
                         //.permitAll()
                         .authenticated()
