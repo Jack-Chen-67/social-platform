@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("article/getArticle/**").permitAll()
                         .requestMatchers("likes/{articleId}/**").permitAll()
                         .requestMatchers("commentLike/getCommentLikeCount/{commentId}**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest()
                         //.permitAll()
                         .authenticated()

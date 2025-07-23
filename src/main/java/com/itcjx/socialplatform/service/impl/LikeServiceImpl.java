@@ -1,7 +1,11 @@
 package com.itcjx.socialplatform.service.impl;
 
 import com.itcjx.socialplatform.config.RedisConfiguration;
+import com.itcjx.socialplatform.entity.Article;
+import com.itcjx.socialplatform.mapper.ArticleMapper;
+import com.itcjx.socialplatform.mapper.UserMapper;
 import com.itcjx.socialplatform.service.ILikeService;
+import com.itcjx.socialplatform.socket.NotificationSocket;
 import com.itcjx.socialplatform.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +19,12 @@ public class LikeServiceImpl implements ILikeService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private ArticleMapper articleMapper;
+    @Autowired
+    private NotificationServiceImpl notificationService;
+    @Autowired
+    private UserMapper userMapper;
 
     //点赞和取消点赞
     @Override
@@ -45,6 +55,24 @@ public class LikeServiceImpl implements ILikeService {
                     //取消点赞->点赞
                     Long added = redisTemplate.opsForSet().add(key, userId);
                     if (added != null && added > 0) {
+
+                        // 新增：触发通知（文章作者接收）
+                        Article article = articleMapper.selectById(articleId);
+                        if (!article.getUserId().equals(userId)) {  // 自己不通知自己
+                            notificationService.createNotify(
+                                    article.getUserId(),  // 接收者ID = 文章作者
+                                    userId,               // 发送者ID = 点赞用户
+                                    "你的文章《" + article.getTitle() + "》被用户" + userMapper.selectById(userId).getUsername() + "点赞",
+                                    "LIKE",
+                                    articleId
+                            );
+                            // socket
+                            NotificationSocket.sendNotification(
+                                    article.getUserId(),
+                                    "{\"type\":\"like\",\"content\":\"用户点赞了你的文章\"}"
+                            );
+                        }
+
                         return Result.success("点赞成功");
                     } else {
                         return Result.error(Result.ErrorCode.BUSINESS_ERROR, "操作失败，请重试");
