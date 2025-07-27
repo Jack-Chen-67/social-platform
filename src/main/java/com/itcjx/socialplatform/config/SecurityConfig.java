@@ -20,9 +20,10 @@ public class SecurityConfig {
                 // 新版本的权限配置方式
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("article/getArticle/**").permitAll()
-                        .requestMatchers("likes/{articleId}/**").permitAll()
-                        .requestMatchers("commentLike/getCommentLikeCount/{commentId}**").permitAll()
+                        .requestMatchers("/article/getArticle/**").permitAll()
+                        .requestMatchers("/article/searchWithAI").permitAll()
+                        .requestMatchers("/likes/{articleId}/**").permitAll()
+                        .requestMatchers("/commentLike/getCommentLikeCount/{commentId}**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest()
                         //.permitAll()

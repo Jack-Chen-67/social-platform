@@ -6,6 +6,12 @@ spring:
     password: a001
   security:
 
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: qwen:1.8b
+
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true # 开启下划线转驼峰
@@ -21,6 +27,7 @@ logging:
     com.itcjx: DEBUG
     org.springframework.jdbc: TRACE
     org.mybatis: TRACE
+    org.springframework.security: DEBUG
 
 springdoc:
   swagger-ui:

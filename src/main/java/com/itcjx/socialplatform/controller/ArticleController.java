@@ -7,6 +7,8 @@ import com.itcjx.socialplatform.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/article")
 @CrossOrigin(origins = "*")
@@ -40,5 +42,10 @@ public class ArticleController {
         // 清理 Bearer 和前后空格
         String token = authorizationHeader.replace("Bearer ", "").trim();
         return articleService.deleteArticle(id,token);
+    }
+
+    @GetMapping("/searchWithAI")
+    public Result<List<Article>> searchWithAI(@RequestParam String keyword){
+        return articleService.searchWithAI(keyword);
     }
 }

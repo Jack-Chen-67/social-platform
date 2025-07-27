@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcjx.socialplatform.mapper.ArticleMapper">
+
+    <!-- 自定义多关键词查询 -->
+    <select id="searchByKeyword" parameterType="string" resultType="com.itcjx.socialplatform.entity.Article">
+        SELECT * FROM articles WHERE title LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <!-- 多关键词查询 -->
+    <select id="searchByKeywords" parameterType="list" resultType="com.itcjx.socialplatform.entity.Article">
+        SELECT * FROM articles WHERE title IN
+        <foreach item="kw" collection="keywords" open="(" separator="," close=")">
+            #{kw}
+        </foreach>
+    </select>
+
+</mapper>
